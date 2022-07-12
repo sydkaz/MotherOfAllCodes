@@ -1,0 +1,47 @@
+#set($entityName = ${entity.name})
+#set($lowerCaseEntityName = $entityName.substring(0,1).toLowerCase() + $entityName.substring(1))
+
+${header}
+package ${namespace}.${project}.controller;
+
+import ${namespace}.${project}.service.${entity.name}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@Controller
+@RequestMapping("/${entity.name.toLowerCase()}")
+public class ${entity.name}Controller {
+
+    protected final static String REQ_${entity.name.toUpperCase()}_LIST = "${entity.name.toLowerCase()}-list";
+    protected final static String REQ_${entity.name.toUpperCase()}_ADD = "${entity.name.toLowerCase()}-add";
+    protected final static String REQ_${entity.name.toUpperCase()}_EDIT = "${entity.name.toLowerCase()}-edit";
+    protected final static String REQ_${entity.name.toUpperCase()}_REMOVE = "${entity.name.toLowerCase()}-remove";
+
+    @Autowired
+    private ${entity.name}Service ${lowerCaseEntityName}Service;
+
+    @RequestMapping(value = {REQ_${entity.name.toUpperCase()}_LIST}, method = RequestMethod.GET)
+    public String list${entity.name}Page(ModelMap model) {
+        model.addAttribute("${entity.name.toLowerCase()}", ${lowerCaseEntityName}Service.findAll());
+        return REQ_${entity.name.toUpperCase()}_LIST;
+    }
+
+    @RequestMapping(value = {REQ_${entity.name.toUpperCase()}_ADD}, method = RequestMethod.GET)
+    public String add${entity.name}Page(ModelMap model) {
+        return REQ_${entity.name.toUpperCase()}_ADD;
+    }
+
+    @RequestMapping(value = {REQ_${entity.name.toUpperCase()}_EDIT}, method = RequestMethod.GET)
+    public String edit${entity.name}Page(ModelMap model) {
+        return REQ_${entity.name.toUpperCase()}_EDIT;
+    }
+
+    @RequestMapping(value = {REQ_${entity.name.toUpperCase()}_REMOVE}, method = RequestMethod.GET)
+    public String remove${entity.name}Page(ModelMap model) {
+        return REQ_${entity.name.toUpperCase()}_REMOVE;
+    }
+
+}

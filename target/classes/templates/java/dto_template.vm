@@ -1,0 +1,40 @@
+#set($entityName = ${entity.name})
+#set($lowerCaseEntityName = $entityName.substring(0,1).toLowerCase() + $entityName.substring(1))
+
+${header}
+package ${namespace}.${project}.dto;
+
+#foreach($col in ${entity.columns})
+    #if ($col.isJavaType == false)
+import ${namespace}.${project}.${col.name}Dto;
+    #end
+#end
+
+
+public class  ${entity.name}Dto {
+
+#foreach($col in ${entity.columns})
+    private ${col.dataType} ${col.propertyName};
+#end
+
+    public ${entity.name}Dto() {
+    }
+
+#foreach($col in ${entity.columns})
+    /*
+     * Getter of ${col.name}
+     */
+    public ${col.dataType} get${col.name}() {
+        return ${col.propertyName};
+    }
+
+    /*
+     * Setter of ${col.name}
+     */
+    public void set${col.name}(${col.dataType} ${col.propertyName}) {
+        this.${col.propertyName} = ${col.propertyName};
+    }
+#end
+
+
+}

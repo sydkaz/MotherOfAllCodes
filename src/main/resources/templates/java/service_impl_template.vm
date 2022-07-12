@@ -1,0 +1,111 @@
+${header}
+
+package ${namespace}.${project}.service.impl;
+
+import ${namespace}.${project}.dto.${entity.name}Dto;
+import ${namespace}.${project}.entity.${entity.name};
+import ${namespace}.${project}.repositories.${entity.name}Repository;
+import ${namespace}.${project}.service.${entity.name}Service;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+
+@Service("${entity.propertyName}Service")
+@org.springframework.transaction.annotation.Transactional
+public class ${entity.name}ServiceImpl implements ${entity.name}Service{
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    ${entity.name}Repository ${entity.propertyName}Repository;
+
+    /**
+     * Find all ${entity.name}(s)
+     */
+    @Override
+    public List<${entity.name}Dto> findAll(){
+        List<${entity.name}> ${entity.propertyName}List = ${entity.propertyName}Repository.findAll();
+            if (${entity.propertyName}List != null && !${entity.propertyName}List.isEmpty()){
+                return modelMapper.map(${entity.propertyName}List, ArrayList.class);
+            }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Find all ${entity.name}(s)
+     */
+    @Override
+    public Page<${entity.name}Dto> findAll(Pageable pageable){
+        return null;
+    }
+
+    /**
+     * Find one ${entity.name} by Id
+     */
+    @Override
+    public Optional<${entity.name}Dto> findOne(long id){
+        Optional<${entity.name}> ${entity.propertyName} = ${entity.propertyName}Repository.findById(id);
+        if (${entity.propertyName} != null){
+            return modelMapper.map(${entity.propertyName}, Optional.class);
+        }
+        return null;
+    }
+
+    /**
+     * Update ${entity.name}
+     */
+    @Override
+    public void save(${entity.name}Dto ${entity.propertyName}Dto){
+        if (${entity.propertyName}Dto != null){
+            ${entity.name} ${entity.propertyName} = modelMapper.map(${entity.propertyName}Dto, ${entity.name}.class);
+            ${entity.propertyName}Repository.save(${entity.propertyName});
+        }
+    }
+
+    /**
+     * Delete ${entity.name} by Id
+     */
+    @Override
+    public void deleteById(long id){
+        ${entity.propertyName}Repository.deleteById(id);
+    }
+
+    /**
+     * Delete ${entity.name}
+     */
+    @Override
+    public void delete(${entity.name}Dto ${entity.propertyName}Dto){
+        if (${entity.propertyName}Dto != null){
+            ${entity.name} ${entity.propertyName} = modelMapper.map(${entity.propertyName}Dto, ${entity.name}.class);
+            ${entity.propertyName}Repository.delete(${entity.propertyName});
+        }
+    }
+###########################################
+###foreach($col in ${entity.columns})
+##    #if (${col.name} != 'Id')
+##
+##    /**
+##     * Find ${entity.name} by ${col.name}
+##     */
+##    @Override
+##    public ${entity.name}Dto findBy${col.name}(${col.dataType} ${col.propertyName}){
+##        ${entity.name} ${entity.propertyName}Result = ${entity.propertyName}Repository.findBy${col.name}(${col.propertyName});
+##        if (${entity.propertyName}Result != null){
+##            return modelMapper.map(${entity.propertyName}Result, ${entity.name}Dto.class);
+##        }
+##        return null;
+##    }
+##    #end
+###end
+
+}

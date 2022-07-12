@@ -1,0 +1,60 @@
+${header}
+
+package ${namespace}.${project}.repositories;
+
+import ${namespace}.${project}.entity.${entity.name};
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.stream.Stream;
+import java.util.Optional;
+
+@Repository
+public interface ${entity.name}Repository extends CrudRepository<${entity.name}, Long> {
+
+    /**
+     * Find all ${entity.name}(s)
+     */
+    List<${entity.name}> findAll();
+
+    /**
+     * Find all ${entity.name}(s)
+     */
+    Page<${entity.name}> findAll(Pageable pageable);
+
+    /**
+     * Find one ${entity.name} by Id
+     */
+    Optional<${entity.name}> findById(long id);
+
+    /**
+     * Update ${entity.name}
+     */
+    ${entity.name} save(${entity.name} ${entity.propertyName});
+
+    /**
+     * Delete ${entity.name} by Id
+     */
+    void deleteById(long id);
+
+    /**
+     * Delete ${entity.name}
+     */
+    void delete(${entity.name} ${entity.propertyName});
+###########################################
+###foreach($col in ${entity.columns})
+##    #if (${col.name} != 'Id')
+##
+##    /**
+##     * Find ${entity.name} by ${col.name}
+##     */
+##    public ${entity.name} findBy${col.name}(${col.dataType} ${col.propertyName});
+##    #end
+###end
+
+}

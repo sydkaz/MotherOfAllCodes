@@ -1,0 +1,22 @@
+${header}
+package ${namespace}.${project}.bean;
+
+import ${namespace}.${project}.facade.*;
+import ${namespace}.${project}.facade.impl.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class BeansConfiguration {
+
+#foreach($entity in ${entities})
+    /*
+     * ${entity.name}Facade
+     */
+    @Bean
+    public ${entity.name}Facade ${entity.propertyName}Facade() {
+        return new ${entity.name}Impl();
+    }
+
+#end
+}
